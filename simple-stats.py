@@ -1,6 +1,12 @@
+from dotenv import load_dotenv
 from bedwars_api import HypixelAPI
+import os
 
-api = HypixelAPI("3ae7e469-f78e-474e-9d0c-1ee6c4378127")
+
+load_dotenv()
+
+
+api = HypixelAPI(os.environ.get("API_KEY"))
 
 while True:
     prompt = input("Is (n)ick, (f)kdr, or (q)uit: ")
