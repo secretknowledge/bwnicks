@@ -1,4 +1,4 @@
-from stats import HypixelAPI
+from bedwars_api import HypixelAPI
 
 api = HypixelAPI("3ae7e469-f78e-474e-9d0c-1ee6c4378127")
 
