@@ -1,5 +1,3 @@
-TODO:
-
 - Add error message when API is rate limited / disabled / out of requests.
 - Optimise caching format for performance and so it doesn't take up too much space.
 - Create custom class alike to SimpleNamespace that is more memory efficient and more optimised toward our data.
