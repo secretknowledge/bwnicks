@@ -34,3 +34,17 @@ class TooManyRequestsException(APIException):
         logging.debug(f"Class {self.__class__.__name__}: __init__ called")
         super().__init__(message)
         logging.debug(f"TooManyRequestsException raised: {message}")
+
+
+class InvalidRequestException(APIException):
+    def __init__(self, message="The API request was invalid. Please contact support."):
+        logging.debug(f"Class {self.__class__.__name__}: __init__ called")
+        super().__init__(message)
+        logging.debug(f"InvalidRequestException raised: {message}")
+
+
+class InvalidCredentialsException(APIException):
+    def __init__(self, message="The API credentials were invalid. Please contact support."):
+        logging.debug(f"Class {self.__class__.__name__}: __init__ called")
+        super().__init__(message)
+        logging.debug(f"InvalidCredentialsException raised: {message}")

@@ -21,8 +21,16 @@ class HypixelAPI:
                 params={"key": self.api_key,
                         "name": player_name},
             ).json()
+            logging.debug(f"Class {self.__class__.__name__}: Received response from API for player {player_name}")
 
-            if data["player"] is None:
+            if data["success"] is False:
+                logging.debug(f"Class {self.__class__.__name__}: API request for player {player_name} failed")
+                if data["cause"] == "You have already looked up this name recently" or data["cause"] == "Key throttle":
+                    raise TooManyRequestsException
+                else:
+                    raise InvalidRequestException
+
+            elif data["player"] is None:
                 logging.debug(f"Class {self.__class__.__name__} for player {player_name}: no data available")
                 raise PlayerNotFoundException
             else:
@@ -47,8 +55,18 @@ class HypixelAPI:
         logging.debug(f"Class {self.__class__.__name__}: fkdr() called")
         player_data = self.player(player_name)
         logging.debug(f"Class {self.__class__.__name__}: player_data for player {player_name} is found")
-        fkdr = int(player_data.tree.player.stats.Bedwars.final_kills_bedwars) / int(
-            player_data.tree.player.stats.Bedwars.final_deaths_bedwars)
+        try:
+            fkdr = int(player_data.tree.player.stats.Bedwars.final_kills_bedwars) / int(
+                player_data.tree.player.stats.Bedwars.final_deaths_bedwars)
+        except ZeroDivisionError:
+            logging.debug(f"Class {self.__class__.__name__}: fkdr: division by zero for player {player_name}")
+            fkdr = 0
+        except AttributeError:
+            logging.debug(f"Class {self.__class__.__name__}: fkdr: attribute error for player {player_name}")
+            fkdr = 0
+
         logging.debug(f"Class {self.__class__.__name__}: fkdr for player {player_name} = {fkdr}")
 
         return round(fkdr, 2)
+
+# graciecooper2018

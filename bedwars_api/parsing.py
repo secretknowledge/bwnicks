@@ -20,3 +20,8 @@ class LogParser:
 
             for person in people:
                 self.people.append(person)
+
+    def scan(self):
+        with open(self.log_file, "r") as f:
+            for line in f.read():
+                self.parse(line)
