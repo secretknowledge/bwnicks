@@ -9,7 +9,7 @@ load_dotenv()
 
 
 logging.basicConfig(filename="stats.log", level=logging.DEBUG, filemode="w")
-logging.debug(f"\n\nbwnicks starting at {datetime.datetime.now()}\n\n")
+logging.debug(f"\n\nbwnicks simple_stats.py starting at {datetime.datetime.now()}\n\n")
 
 api = HypixelAPI(os.environ.get("HYPIXEL_API_KEY"))
 

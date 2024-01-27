@@ -53,9 +53,9 @@ class HypixelAPI:
 
     def fkdr(self, player_name):
         logging.debug(f"Class {self.__class__.__name__}: fkdr() called")
-        player_data = self.player(player_name)
         logging.debug(f"Class {self.__class__.__name__}: player_data for player {player_name} is found")
         try:
+            player_data = self.player(player_name)
             fkdr = int(player_data.tree.player.stats.Bedwars.final_kills_bedwars) / int(
                 player_data.tree.player.stats.Bedwars.final_deaths_bedwars)
         except ZeroDivisionError:
@@ -64,9 +64,29 @@ class HypixelAPI:
         except AttributeError:
             logging.debug(f"Class {self.__class__.__name__}: fkdr: attribute error for player {player_name}")
             fkdr = 0
+        except PlayerNotFoundException:
+            logging.debug(f"Class {self.__class__.__name__}: fkdr: player {player_name} not found")
+            fkdr = 0
 
         logging.debug(f"Class {self.__class__.__name__}: fkdr for player {player_name} = {fkdr}")
 
         return round(fkdr, 2)
+
+    def level(self, player_name):
+        logging.debug(f"Class {self.__class__.__name__}: level() called")
+        player_data = self.player(player_name)
+        logging.debug(f"Class {self.__class__.__name__}: player_data for player {player_name} is found")
+        try:
+            level = int(player_data.tree.player.stats.Bedwars.level)
+        except AttributeError:
+            logging.debug(f"Class {self.__class__.__name__}: level: attribute error for player {player_name}")
+            level = 0
+        except PlayerNotFoundException:
+            logging.debug(f"Class {self.__class__.__name__}: level: player {player_name} not found")
+            level = 0
+
+        logging.debug(f"Class {self.__class__.__name__}: level for player {player_name} = {level}")
+
+        return level
 
 # graciecooper2018
