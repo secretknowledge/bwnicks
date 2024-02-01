@@ -10,8 +10,6 @@ class LogParser:
         self.people = []
 
     def parse(self, line):
-        logging.debug(f"Class {self.__class__.__name__}: parse() called")
-
         keyword = "[Client thread/INFO]: [CHAT] ONLINE: "
         if keyword in line:
             logging.debug(f"Found line in {self.log_file}: {line}")

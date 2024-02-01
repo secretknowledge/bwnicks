@@ -15,7 +15,12 @@ class HypixelAPI:
 
     def player(self, player_name):
         logging.debug(f"Class {self.__class__.__name__}: player() called")
-        if player_name not in self.cache.__dict__["data"].keys():
+
+        cached_players = self.cache.__dict__["data"].keys()
+
+        logging.debug(f"Class {self.__class__.__name__}: Found players in cache: {cached_players}")
+        if player_name not in cached_players:
+            logging.debug(f"Class {self.__class__.__name__}: player {player_name} not in cache")
             data = requests.get(
                 url="https://api.hypixel.net/player",
                 params={"key": self.api_key,
@@ -26,8 +31,10 @@ class HypixelAPI:
             if data["success"] is False:
                 logging.debug(f"Class {self.__class__.__name__}: API request for player {player_name} failed")
                 if data["cause"] == "You have already looked up this name recently" or data["cause"] == "Key throttle":
+                    logging.debug(f"Raised Too many requests for player {player_name} because of {data['cause']}")
                     raise TooManyRequestsException
                 else:
+                    logging.debug(f"Raised Invalid request for player {player_name} because of {data['cause']}")
                     raise InvalidRequestException
 
             elif data["player"] is None:
@@ -38,6 +45,7 @@ class HypixelAPI:
                 self.cache.__setitem__(player_name, Data(data))
                 logging.debug(f"Class {self.__class__.__name__} for player {player_name}: data added to cache")
 
+        logging.debug(f"Player {player_name} was found in cache")
         return self.cache.__getitem__(player_name)
 
     def nick(self, player_name):
@@ -53,7 +61,6 @@ class HypixelAPI:
 
     def fkdr(self, player_name):
         logging.debug(f"Class {self.__class__.__name__}: fkdr() called")
-        logging.debug(f"Class {self.__class__.__name__}: player_data for player {player_name} is found")
         try:
             player_data = self.player(player_name)
             fkdr = int(player_data.tree.player.stats.Bedwars.final_kills_bedwars) / int(
