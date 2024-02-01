@@ -3,6 +3,7 @@ from bedwars_api import HypixelAPI
 import os
 import logging
 import datetime
+import json
 
 
 load_dotenv()
@@ -25,5 +26,7 @@ while True:
         print(api.fkdr(input("Player IGN: ")))
     elif prompt == "q":
         break
+    elif prompt == "d":
+        print(json.dumps(api.data(input("Player IGN: ")), indent=2))
     else:
         print("Invalid input.")
